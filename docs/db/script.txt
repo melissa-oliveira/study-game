@@ -1,0 +1,55 @@
+-- SCRIPT DE CRIAÇÃO DAS TABLEAS PARA O APP STUDYGAME
+
+-- Criação da tabela tb_user
+CREATE TABLE tb_user (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    phone VARCHAR NOT NULL,
+    password VARCHAR NOT NULL
+);
+
+-- Criação da tabela tb_folder
+CREATE TABLE tb_folder (
+    id SERIAL PRIMARY KEY,
+    description VARCHAR NOT NULL,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES tb_user (id) ON DELETE CASCADE
+);
+
+-- Criação da tabela tb_flashcard
+CREATE TABLE tb_flashcard (
+    id SERIAL PRIMARY KEY,
+    front VARCHAR NOT NULL,
+    back VARCHAR NOT NULL,
+    folder_id BIGINT NOT NULL,
+    FOREIGN KEY (folder_id) REFERENCES tb_folder (id) ON DELETE CASCADE
+);
+
+-- Criação da tabela tb_quiz
+CREATE TABLE tb_quiz (
+    id SERIAL PRIMARY KEY,
+    question VARCHAR NOT NULL,
+    folder_id BIGINT NOT NULL,
+    FOREIGN KEY (folder_id) REFERENCES tb_folder (id) ON DELETE CASCADE
+);
+
+-- Criação da tabela tb_quiz_options
+CREATE TABLE tb_quiz_options (
+    id SERIAL PRIMARY KEY,
+    description VARCHAR NOT NULL,
+    quiz_id BIGINT NOT NULL,
+    FOREIGN KEY (quiz_id) REFERENCES tb_quiz (id) ON DELETE CASCADE
+);
+
+-- Criação da tabela tb_user_points
+CREATE TABLE tb_user_points
+(
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    wrong_qnt BIGINT DEFAULT 0,
+    easy_qnt BIGINT DEFAULT 0,
+    hard_qnt BIGINT DEFAULT 0,
+    guess_qnt BIGINT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES tb_user (id) ON DELETE CASCADE
+)
